@@ -6,7 +6,7 @@ import useBasicForm from '@hooks/useBasicForm';
 import useFetch from '@hooks/useFetch';
 import { Card, Col, Form, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
-const CategoryForm = (props) => {
+const CategoryChildForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues, groups, branchs, isEditing } = props;
     const { execute:executeUpFile } = useFetch(apiConfig.file.upload);
     const [ imageUrl, setImageUrl ] = useState(null);
@@ -14,7 +14,6 @@ const CategoryForm = (props) => {
         onSubmit,
         setIsChangedFormValues,
     });
-    console.log("datadetail",dataDetail);
     const uploadFile = (file, onSuccess, onError) => {
         executeUpFile({
             data: {
@@ -38,11 +37,10 @@ const CategoryForm = (props) => {
     useEffect(() => {
         form.setFieldsValue({
             ...dataDetail,
-            
         });
         setImageUrl(dataDetail.categoryImage);
-    
     },[ dataDetail ]);
+    console.log(dataDetail);
     return <div>
         <Form 
             
@@ -67,17 +65,19 @@ const CategoryForm = (props) => {
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <TextField label="Category Name" required name="categoryName"  />
+                        <TextField label="Category Name" required name="categoryName" />
                     </Col>
                     <Col span={12}>
                         <TextField label="Category Description" required name="categoryDescription" type="textarea" />
                     </Col>
                     
                 </Row>
+               
+                
                 <div className="footer-card-form">{actions}</div>
             </Card>
         </Form>
     </div>;
 };
 
-export default CategoryForm;
+export default CategoryChildForm;

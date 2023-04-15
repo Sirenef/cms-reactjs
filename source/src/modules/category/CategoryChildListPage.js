@@ -8,11 +8,22 @@ import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import useFetch from '@hooks/useFetch';
-
-const CategoryListPage = () => {
-   
+import { useParams } from 'react-router-dom';
+import { apiUrl } from '../../constants/index';
+const CategoryChildListPage = () => {
+    const baseHeader = {
+        'Content-Type': 'application/json',
+    };
+    const { id }=useParams();
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
-        apiConfig: apiConfig.category,
+        apiConfig: {
+            getList: {
+                baseURL: `${apiUrl}v1/category/list?parentId=${id}`,
+                method: 'GET',
+                headers: baseHeader,
+            },
+            delete:apiConfig.category.delete,
+        },
         options: {
             pageSize: DEFAULT_TABLE_ITEM_SIZE,
             objectName: 'category',
@@ -21,6 +32,7 @@ const CategoryListPage = () => {
             funcs.mappingData = (response) => {
                 if (response.result === true) {
                     return {
+                        
                         data: response.data.data,
                         total: response.data.totalElements,
                     };
@@ -87,4 +99,4 @@ const CategoryListPage = () => {
     );
 };
 
-export default CategoryListPage;
+export default CategoryChildListPage;

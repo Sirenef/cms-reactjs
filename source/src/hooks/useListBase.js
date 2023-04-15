@@ -3,7 +3,7 @@ import useQueryParams from './useQueryParams';
 import { commonStatus, commonStatusColor, DEFAULT_TABLE_ITEM_SIZE, DEFAULT_TABLE_PAGE_START } from '@constants';
 
 import { Modal, Button, Divider, Tag } from 'antd';
-import { DeleteOutlined, LockOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LockOutlined, CheckOutlined, EditOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 import { defineMessage, useIntl } from 'react-intl';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -69,7 +69,6 @@ const useListBase = ({
         pageSize: DEFAULT_TABLE_ITEM_SIZE,
     },
     override,
-    listdataCategory=[],
 } = {}) => {
     const { params: queryParams, setQueryParams, serializeParams, deserializeParams } = useQueryParams();
     const [ data, setData ] = useState(0);
@@ -95,7 +94,7 @@ const useListBase = ({
     const mappingData = (response) => {
         return response;
     };
-
+    const [ parentId, setParentId ] = useState([]);
     const handleGetListError = (error) => {
         notification({ type: 'error', message: 'Get list error' });
     };
@@ -280,6 +279,7 @@ const useListBase = ({
             );
         },
         edit: ({ buttonProps, ...dataRow }) => {
+            // console.log(dataRow);
             return (
                 <Link
                     to={mixinFuncs.getItemDetailLink(dataRow)}
@@ -287,6 +287,18 @@ const useListBase = ({
                 >
                     <Button {...buttonProps} type="link" style={{ padding: 0 }}>
                         <EditOutlined color="red" />
+                    </Button>
+                </Link>
+            );
+        },
+        child: ({ buttonProps, ...dataRow }) => {
+            return (
+                <Link
+                    to={mixinFuncs.getItemParentDetailLink(dataRow) }
+                    state={{ action: 'child', prevPath: location.pathname }}
+                >
+                    <Button {...buttonProps} type="link" style={{ padding: 0 }}>
+                        <PlusSquareOutlined />
                     </Button>
                 </Link>
             );
@@ -312,7 +324,7 @@ const useListBase = ({
     };
 
     const renderActionColumn = (
-        action = { edit: false, delete: false, changeStatus: false },
+        action = { edit: false, delete: false, changeStatus: false, child: false },
         columnsProps,
         buttonProps,
     ) => {
@@ -360,7 +372,10 @@ const useListBase = ({
     const getItemDetailLink = (dataRow) => {
         return `${pagePath}/${dataRow.id}`;
     };
-
+    const getItemParentDetailLink = (dataRow) => {
+        setParentId(dataRow.id);
+        return `${pagePath}/child/${dataRow.id}`;
+    };
     const getCreateLink = () => {
         return `${pagePath}/create`;
     };
@@ -435,6 +450,7 @@ const useListBase = ({
             onDeleteItemCompleted,
             filterLanguage,
             renderSearchForm,
+            getItemParentDetailLink,
         };
 
         override?.(centralizedHandler);

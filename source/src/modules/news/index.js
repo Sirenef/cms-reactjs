@@ -34,38 +34,7 @@ const NewsListPage = () => {
     });
 
     const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
-    // mergedArray 
-    // let mergedArray=[];
-    // if(listcategory.data){
-    //     mergedArray = data.map(obj1 => {
-    //         const obj2 = listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
-    //         // return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, avatar: obj1.avatar, banner: obj1.banner, createdBy: obj1.createdBy, createdDate: obj1.createdDate, kind: obj1.kind, modifiedBy: obj1.modifiedBy, modifiedDate: obj1.modifiedDate, pinTop: obj1.pinTop, ...obj1 };
-    //         return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
-    //     });
-    // }
-    // console.log("mergedArray", mergedArray);
-    // const categoryIdMap = {};
-    // rawlistcategory.forEach(category => {
-    //     categoryIdMap[category.id] = category.categoryName;
-    // });
-    // const listStatusIdMap={};
-    // listStatus.forEach(status => {
-    //     listStatusIdMap[status.value]=status.label;
-    // });
-    // console.log("categoryIdMap",categoryIdMap);
-    // const updateQueryFilter = {};
-    // for (const [ key, value ] of Object.entries(queryFilter)) {
-    //     if (key === 'categoryId' && categoryIdMap[value]) {
-    //         updateQueryFilter[key] = categoryIdMap[value];
-    //     } 
-    //     else if( key === 'status' && listStatusIdMap[value] ){
-    //         updateQueryFilter[key] = listStatusIdMap[value];
-    //     }
-    //     // else {
-    //     //     updateQueryFilter[key] = value;
-    //     // }
-    // }
-    // console.log("updateQueryFilter",updateQueryFilter);
+    
     const handleCategoryName = (id) => {
         let categoryname="";        
         rawlistcategory.map((item) => {
@@ -90,7 +59,7 @@ const NewsListPage = () => {
             ),
         },
         { title: 'title', dataIndex: 'title' },
-        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)), width:"150px" },     
+        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)), width:"300px" },     
         { title: 'Created Date', dataIndex: 'createdDate', width:"200px", align:"center", color:"red" },
         { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '90px', render:(pinTop) => ( pinTop==1 ? ( <IconPin size={"18px"}/> ) : (<IconPinnedOff size={"18px"}/>) )  },
         mixinFuncs.renderStatusColumn({ width: '90px' }),
