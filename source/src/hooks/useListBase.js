@@ -125,7 +125,7 @@ const useListBase = ({
         const copyFilter = { ...filter };
 
         const page = parseInt(queryParams.get('page'));
-        copyFilter.page = page > 0 ? page : DEFAULT_TABLE_PAGE_START;
+        copyFilter.page = page > 0 ? page - 1 : DEFAULT_TABLE_PAGE_START;
 
         copyFilter.size = options.pageSize;
 
@@ -157,7 +157,9 @@ const useListBase = ({
     };
 
     function changePagination(page) {
-        queryParams.set('page', page.current);
+
+        queryParams.set('page', page.current  );
+        console.log('page', page.current );
         setQueryParams(queryParams);
     }
 
@@ -168,14 +170,13 @@ const useListBase = ({
     const onDeleteItemCompleted = (id) => {
         const currentPage = queryParams.get('page');
         if (data.length === 1 && currentPage > 1) {
-            queryParams.set('page', currentPage - 1);
+            queryParams.set('page', currentPage );
             setQueryParams(queryParams);
         } else {
             mixinFuncs.getList();
             // setData((data) => data.filter((item) => item.id !== id));
         }
     };
-
     const handleDeleteItem = (id) => {
         if (!mixinFuncs.hasPermission('delete')) return;
         setLoading(true);
@@ -462,7 +463,7 @@ const useListBase = ({
     useEffect(() => {
         mixinFuncs.getList();
 
-        const page = parseInt(queryFilter.page);
+        const page = parseInt(queryFilter.page || DEFAULT_TABLE_PAGE_START);
         if (page > 0 && page !== pagination.current) {
             setPagination((p) => ({ ...p, current: page }));
         } else if (page < 1) {
